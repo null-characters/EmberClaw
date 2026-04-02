@@ -68,14 +68,16 @@
 
 **目标：** 搭建可运行的开发环境
 
+**进度记录：** [PHASE_0.md](./PHASE_0.md)
+
 #### 主要任务
 
-- [ ] Fork OpenClaw 仓库
-- [ ] Fork claw-code-parity 仓库
-- [ ] 搭建本地开发环境
+- [x] Fork OpenClaw 仓库
+- [x] Fork claw-code-parity 仓库
+- [x] 搭建本地开发环境
 - [ ] 配置 Anthropic API Key
 - [ ] 配置其他 LLM（可选）
-- [ ] 验证 OpenClaw CLI 可启动
+- [x] 验证 OpenClaw CLI 可启动
 
 #### 输出物
 
