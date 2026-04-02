@@ -75,7 +75,7 @@
 - [x] Fork OpenClaw 仓库
 - [x] Fork claw-code-parity 仓库
 - [x] 搭建本地开发环境
-- [ ] 配置 Anthropic API Key
+- [x] 配置模型 API（OpenAI 兼容，`~/.openclaw/openclaw.json`）
 - [ ] 配置其他 LLM（可选）
 - [x] 验证 OpenClaw CLI 可启动
 
@@ -89,6 +89,8 @@
 ### 阶段 1：基础骨架（可运行的 CLI Agent）
 
 **目标：** 集成 claw-code Rust 作为 coding engine
+
+**进度记录：** [PHASE_1.md](./PHASE_1.md)
 
 #### 主要任务
 
