@@ -24,8 +24,8 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/your-username/emberclaw.git
-cd emberclaw
+git clone https://github.com/null-characters/EmberClaw.git
+cd EmberClaw
 
 # 安装依赖
 npm install
