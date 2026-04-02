@@ -34,7 +34,7 @@
 | 层级 | 技术选型 | 说明 |
 |------|---------|------|
 | **主框架** | OpenClaw | Agent 生命周期、会话管理、多 Agent 路由、持久化记忆、插件系统 |
-| **编程核心引擎** | claw-code (Rust) | headless coding runtime，提供 git worktree、tool calling、sub-agent 执行等 |
+| **编程核心引擎** | claw-code-parity (Rust) | headless coding runtime，提供 git worktree、tool calling、sub-agent 执行等 |
 | **技能系统** | Superpowers + Drift + nordic-nrf + IoT 专属 skills | 继承现有能力 + 新增 IoT 专属 |
 | **工具层** | Serial MCP / SSH MCP / GitHub MCP / Database MCP / Docker MCP | 硬件操作与系统集成 |
 | **语言** | TypeScript + Rust | TypeScript（主语言）+ Rust（性能关键部分） |
@@ -43,7 +43,7 @@
 ### 关键依赖
 
 - [OpenClaw](https://github.com/openclaw/openclaw) - 主框架
-- [claw-code](https://github.com/openclaw/claw-code) - Rust 编程引擎
+- [claw-code-parity](https://github.com/ultraworkers/claw-code-parity) - Rust 编程引擎（上游维护仓库）
 
 ---
 
@@ -71,7 +71,7 @@
 #### 主要任务
 
 - [ ] Fork OpenClaw 仓库
-- [ ] Fork claw-code 仓库
+- [ ] Fork claw-code-parity 仓库
 - [ ] 搭建本地开发环境
 - [ ] 配置 Anthropic API Key
 - [ ] 配置其他 LLM（可选）
