@@ -94,11 +94,11 @@
 
 #### 主要任务
 
-- [ ] 集成 claw-code Rust 作为 coding engine
-- [ ] 实现基本 REPL 交互
-- [ ] 实现 git worktree 支持
-- [ ] 实现自动 commit / push（配置 PAT）
-- [ ] 基本命令行参数解析
+- [x] 集成 claw-code Rust 作为 coding engine
+- [x] 实现基本 REPL 交互
+- [x] 实现 git worktree 支持
+- [x] 实现自动 commit / push（配置 PAT）
+- [x] 基本命令行参数解析
 
 #### 输出物
 
