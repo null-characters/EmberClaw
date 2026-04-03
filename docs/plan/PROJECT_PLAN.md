@@ -114,27 +114,29 @@
 
 #### 主要任务
 
+**进度记录：** [PHASE_2.md](./PHASE_2.md)
+
 ##### 2.1 迁移现有技能
 
-- [ ] 迁移 Superpowers skills
-- [ ] 迁移 Drift 代码一致性检查
-- [ ] 迁移 nordic-nrf 技能
-- [ ] 整理 AGENTS.md / SOUL.md
+- [x] 迁移 nordic-nrf 技能（从 `~/.cursor/skills/`）
+- [x] 整理 AGENTS.md / SOUL.md
+- ~~Superpowers~~ — 上游无独立可迁移技能（仅测试 fixture）
+- ~~Drift~~ — 上游指 npm 完整性漂移检测，非代码一致性检查
 
 ##### 2.2 开发 IoT 专属 Skills
 
-- [ ] `nordic-mesh` - nRF Mesh 开发技能
-- [ ] `power-control` - 开关电源控制技能
-- [ ] `rpi-gateway` - 树莓派网关技能
-- [ ] `ios-dev` - iOS 开发技能
-- [ ] `android-dev` - Android 开发技能
-- [ ] `embedded-testing` - 嵌入式测试技能
+- [x] `nordic-mesh` - nRF Mesh 开发技能
+- [x] `power-control` - 开关电源控制技能
+- [x] `rpi-gateway` - 树莓派网关技能
+- [x] `ios-dev` - iOS 开发技能
+- [x] `android-dev` - Android 开发技能
+- [x] `embedded-testing` - 嵌入式测试技能
 
 #### 输出物
 
-- ✅ 完整的 skills 目录
-- ✅ AGENTS.md（项目上下文）
-- ✅ SOUL.md（长期记忆）
+- ✅ 完整的 skills 目录（7 个 skill）
+- ✅ AGENTS.md（项目上下文 + 技能系统 + CLI 用法）
+- ✅ SOUL.md（长期记忆与决策记录）
 
 ---
 
