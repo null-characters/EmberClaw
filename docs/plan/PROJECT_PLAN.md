@@ -178,26 +178,35 @@
 
 **目标：** 实现 sub-agent 协同工作
 
+**进度记录：** [PHASE_4.md](./PHASE_4.md)
+
 #### 主要任务
 
-##### 4.1 Sub-Agent 分组
+##### 4.1 Sub-Agent 分组（4 个领域 agent）
 
-- [ ] **嵌入式组** - Nordic / 电源控制
-- [ ] **网关组** - 树莓派 / Linux
-- [ ] **App 组** - iOS / Android
-- [ ] **Web 组** - 前端 / 后端 / 数据库
+- [ ] **embedded**（嵌入式）- nordic-nrf / nordic-mesh / power-control / nrf-sdk / embedded-testing
+- [ ] **gateway**（网关）- rpi-gateway / docker-ci / github / embedded-testing
+- [ ] **app**（移动端）- ios-dev / android-dev / xcode-build / android-build
+- [ ] **web**（阶段 5 占位）- 待定
 
 ##### 4.2 流程集成
 
-- [ ] 集成 Superpowers 全流程
-  - Planning → TDD → Review → Deploy
-- [ ] 实现多 Agent 并行调度
-- [ ] 实现 Agent 间通信协议
+- [ ] Planning → agent 选择 + 子任务生成（orchestrator 分析任务，匹配分组）
+- [ ] TDD 并行分发（sessions_spawn，push-based 通知，leaf agent 不可再 spawn）
+- [ ] Review gate（结果汇总 + 质量检查 + steer 重试）
+- [ ] Deploy 触发（构建/烧录/部署）
+- [ ] 端到端验证：三端同步构建场景
+
+##### 4.3 OpenClaw 配置
+
+- [ ] agents.list[] 定义 4 个领域 agent
+- [ ] allowAgents 白名单：orchestrator 可 spawn 4 个 leaf agent
+- [ ] maxSpawnDepth=2，maxConcurrent=4
 
 #### 输出物
 
-- ✅ 可并行处理多个模块
-- ✅ 端到端任务自动化
+- ✅ 可并行处理多个模块（embedded + gateway + app 同时构建）
+- ✅ 端到端任务自动化（固件编译 → App 联调）
 
 ---
 

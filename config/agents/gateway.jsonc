@@ -1,0 +1,55 @@
+{
+  // EmberClaw Gateway Agent Configuration
+  // 网关 Agent - 专注于树莓派网关部署、Docker CI、GitHub 操作
+  // depth: 1 (leaf agent, cannot spawn sub-agents)
+  
+  "id": "gateway",
+  "name": "Gateway Agent",
+  "default": false,
+  
+  // Skills for gateway development
+  "skills": [
+    "rpi-gateway",      // 树莓派 Linux 网关部署与调试
+    "docker-ci",        // Docker — CI 容器、交叉编译环境
+    "github",           // gh CLI — PR、CI、issue、API 查询
+    "embedded-testing"  // 嵌入式测试与 CI
+  ],
+  
+  // Sub-agent configuration - leaf agent cannot spawn
+  "subagents": {
+    "allowAgents": []
+  },
+  
+  // Sandbox configuration - workspace-only access
+  "sandbox": {
+    "mode": "workspace",
+    "allowedPaths": [
+      "./gateway",
+      "./docker",
+      "./ci"
+    ]
+  },
+  
+  // Agent-specific model preferences
+  "thinkingDefault": "medium",
+  
+  // Typical tasks this agent handles:
+  // - Docker 多阶段构建
+  // - GitHub Actions CI 配置
+  // - BLE->MQTT 网关部署
+  // - 树莓派系统配置
+  // - 交叉编译环境搭建
+  
+  // CLI tools this agent uses:
+  // - docker, docker compose
+  // - gh (GitHub CLI)
+  // - ssh, scp
+  // - systemctl
+  
+  "_meta": {
+    "domain": "gateway",
+    "depth": 1,
+    "version": "0.1.0",
+    "created": "2026-04-07"
+  }
+}

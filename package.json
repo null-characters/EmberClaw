@@ -9,9 +9,15 @@
   },
   "scripts": {
     "emberclaw": "node bin/emberclaw.mjs",
-    "build:engine": "cargo build --release -p rusty-claude-cli --manifest-path claw-engine/claw-code-parity/rust/Cargo.toml"
+    "build:engine": "cargo build --release -p rusty-claude-cli --manifest-path claw-engine/claw-code-parity/rust/Cargo.toml",
+    "test": "npx tsx tests/orchestrator.test.ts",
+    "typecheck": "npx tsc --noEmit"
   },
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "tsx": "^4.7.0"
   }
 }

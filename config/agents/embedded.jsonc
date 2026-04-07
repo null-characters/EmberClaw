@@ -1,0 +1,56 @@
+{
+  // EmberClaw Embedded Agent Configuration
+  // 嵌入式 Agent - 专注于 Nordic nRF 固件开发、Mesh 网络、电源控制
+  // depth: 1 (leaf agent, cannot spawn sub-agents)
+  
+  "id": "embedded",
+  "name": "Embedded Agent",
+  "default": false,
+  
+  // Skills for embedded development
+  "skills": [
+    "nordic-nrf",      // nRF5x/nRF Connect SDK 专家
+    "nordic-mesh",     // nRF Mesh 开发
+    "power-control",   // 开关电源控制驱动
+    "nrf-sdk",         // west/nrfjprog — nRF52840 固件编译、烧录、调试
+    "embedded-testing" // 嵌入式测试与 CI
+  ],
+  
+  // Sub-agent configuration - leaf agent cannot spawn
+  "subagents": {
+    "allowAgents": []
+  },
+  
+  // Sandbox configuration - workspace-only access
+  "sandbox": {
+    "mode": "workspace",
+    "allowedPaths": [
+      "./firmware",
+      "./boards",
+      "./drivers"
+    ]
+  },
+  
+  // Agent-specific model preferences (optional)
+  "thinkingDefault": "medium",
+  
+  // Typical tasks this agent handles:
+  // - nRF52840 固件编译/烧录
+  // - Mesh 模型配置
+  // - 电源驱动调试
+  // - BLE 协议栈配置
+  // - RTOS 任务管理
+  
+  // CLI tools this agent uses:
+  // - west (Zephyr build system)
+  // - nrfjprog (J-Link programmer)
+  // - JLinkRTTClient (RTT logging)
+  // - ninja, cmake
+  
+  "_meta": {
+    "domain": "embedded",
+    "depth": 1,
+    "version": "0.1.0",
+    "created": "2026-04-07"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  // EmberClaw Web Agent Configuration
+  // Web Agent - 阶段 5 占位
+  // depth: 1 (leaf agent, cannot spawn sub-agents)
+  
+  "id": "web",
+  "name": "Web Agent",
+  "default": false,
+  
+  // Skills for web development - TO BE DEFINED in Phase 5
+  "skills": [],
+  
+  // Sub-agent configuration - leaf agent cannot spawn
+  "subagents": {
+    "allowAgents": []
+  },
+  
+  // Sandbox configuration - workspace-only access
+  "sandbox": {
+    "mode": "workspace",
+    "allowedPaths": [
+      "./web",
+      "./frontend",
+      "./backend"
+    ]
+  },
+  
+  // Agent-specific model preferences
+  "thinkingDefault": "medium",
+  
+  // Typical tasks this agent will handle (Phase 5):
+  // - Web 前端开发 (React/Vue/Next.js)
+  // - 后端 API 开发
+  // - 数据库操作
+  // - 服务器部署
+  
+  // CLI tools this agent will use (Phase 5):
+  // - npm, node
+  // - docker
+  // - database CLI tools
+  
+  "_meta": {
+    "domain": "web",
+    "depth": 1,
+    "version": "0.1.0",
+    "created": "2026-04-07",
+    "status": "placeholder",
+    "targetPhase": 5
+  }
+}

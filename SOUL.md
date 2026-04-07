@@ -66,4 +66,26 @@ OpenClaw 的 skills 是 SKILL.md 文档 + CLI 工具调用，不是独立 MCP se
 
 ---
 
-*最后更新：2026-04-07 — 阶段 3 执行中：5 个开发工具 skill 已创建*
+## 阶段 4 决策
+
+### 多 Agent 分组：4 领域 agent + 1 orchestrator
+
+分组依据：按 IoT 全栈的独立工作域划分。每个 agent 是 depth-1 leaf（不可再 spawn），通过 OpenClaw `allowAgents` 白名单控制。Orchestrator (depth-0) 负责 Planning -> TDD -> Review -> Deploy 流程编排。
+
+分组：
+- **embedded**: 嵌入式固件（nordic-nrf/mesh, power-control, nrf-sdk, embedded-testing）
+- **gateway**: 网关 + CI（rpi-gateway, docker-ci, github, embedded-testing）
+- **app**: 移动端（ios-dev, android-dev, xcode-build, android-build）
+- **web**: 阶段 5 占位
+
+### OpenClaw sub-agent 机制
+
+- `sessions_spawn`：run（一次性）或 session（持久）模式
+- push-based 通知：子 agent 完成后自动通知父 agent，无需轮询
+- `maxSpawnDepth`：默认 1，阶段 4 设为 2（orchestrator -> agent）
+- `allowAgents`：per-agent 白名单，限制可 spawn 的子 agent
+- steer 机制：可中断运行中的 sub-agent 并重启
+
+---
+
+*最后更新：2026-04-07 — 阶段 4 规划完成：多 Agent 分组架构设计*
