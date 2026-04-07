@@ -214,6 +214,29 @@ openclaw gateway call health    # 若文档支持
 pm2 logs openclaw-gateway       # 若使用 pm2
 ```
 
+6. **（已验证可用的最小自动化）用 `cron` 触发一次 agentTurn 并投递到企业微信**  
+   这一步不涉及“构建脚本”，只验证 **cron 调度器 → agentTurn → announce → WeCom** 这条自动化链路能稳定工作。
+
+```bash
+# 说明：
+# - --at 支持 15s/2m/1h 等 duration（不是 "+15s"）
+# - --channel 这里用 wecom（由插件提供的 channel id）
+# - --to 使用企业微信的 userid（例如你在日志里看到的 from.userid）
+openclaw cron add \
+  --name wecom-smoke-test \
+  --agent main \
+  --at 15s \
+  --message "企业微信自动化冒烟测试：请回复收到" \
+  --announce \
+  --channel wecom \
+  --to "<你的企业微信userid>" \
+  --expect-final \
+  --timeout-seconds 60 \
+  --delete-after-run
+```
+
+对应的可复用脚本模板见：`scripts/openclaw/cron-wecom-smoke-test.sh`。
+
 #### 阶段 2：第一个生产级任务（约 2–3 天，体验核心）
 
 目标：例如 **`smartemergencymesh-build-verify`**——拉取/固定分支 → 构建 → **OpenAI 兼容模型**分析日志 → 成败与建议 → 通知 / 审批。
@@ -296,6 +319,9 @@ notification:
 
 - 将任务定义落在**官方指定位置**或 **Git 仓库**中做版本管理。  
 - 用文档中的方式注册/触发（若暂无单一 `task register`，则用 **cron + webhook + agent** 拼出等价行为）。
+
+**阶段 2 的“先跑起来”版本（推荐先这样落地）**：用 `cron add --every` 做一个周期性 job，让 agent 只执行你指定的固定脚本并总结，然后 `--announce` 回推到企业微信。  
+模板脚本见：`scripts/openclaw/cron-build-verify-template.sh`（不包含任何密钥）。
 
 #### 阶段 3：Cron、Webhook 与外部集成（约 2 天）
 
