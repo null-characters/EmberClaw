@@ -2,6 +2,18 @@
 
 本文档整理 EmberClaw / OpenClaw / claw-code-parity 在本机使用过程中的**目标、现状、已遇问题**，**为何 `--local` 不足以替代监工**，以及一份**以 OpenClaw Gateway 为核心的高完整度目标架构**与分阶段落地步骤（不涉及具体密钥，配置请仅写在 `~/.openclaw/` 等本地路径）。
 
+### 进度快照（2026-04 更新）
+
+下列状态为**本仓库维护者在一台参考开发机上的记录**，用于说明「曾跑通到哪一步」；**不表示**其他同事或 CI 环境默认已具备同等配置，亦**不**替代各人按文档在本机重复验证。
+
+| 项 | 状态 | 说明 |
+|----|------|------|
+| OpenClaw + OpenAI 兼容模型 | ✅ 参考环境曾验证 | `openclaw agent --local`、`models.status`、Gateway 下默认 agent 走 `openai-compatible/...`（见 §3.3）。 |
+| **Gateway + 企业微信 Bot（WebSocket）** | ✅ 参考环境曾验证 | 官方插件 `@wecom/wecom-openclaw-plugin`；`channels.wecom` Bot 模式；私聊收发与模型回复曾在该环境端到端成功（见 **§3.5**）。 |
+| §8 阶段 1（Node、模型、Gateway 进程） | ✅ 参考环境已具备 | 该环境曾以前台 `gateway run` 为主；`gateway install` 系统服务为可选项。 |
+| §8 阶段 2（首个持久化「构建验证」类任务） | ⏳ 未落地 | YAML 仍为模板；需映射到 `cron` / `agent` / hooks 等真实 CLI（见 §8.2、§8.5）。 |
+| 企微侧「操作 emberclaw CLI」 | ❌ 非默认能力 | 企微渠道 = **与 Gateway 上 Agent 对话**；`emberclaw worktree`、`commit-push` 等需任务编排或显式工具策略后才可能接入（见 §3.5）。 |
+
 ---
 
 ## 1. 原始目标
@@ -54,6 +66,17 @@
 
 因此：**当前以 `openclaw agent --local` 或 shell 封装为主的用法，主要解决「用 OpenAI 兼容模型对话」；并未自动具备「任务队列、失败重试、验收门禁、7×24 调度」等监工替代能力。**
 
+### 3.5 企业微信（WeCom）× OpenClaw Gateway（参考环境验证记录）
+
+以下为**维护者参考开发机**上曾**实际跑通**的结论，供对齐预期与排错；**密钥与 botId/secret 仅允许存在于本机** `~/.openclaw/openclaw.json`（或 `OPENCLAW_CONFIG_PATH`），**禁止**写入本仓库（步骤见 [openclaw-wecom-practice.md](./openclaw-wecom-practice.md)）。
+
+- **插件**：`@wecom/wecom-openclaw-plugin` 安装于用户扩展目录（如 `~/.openclaw/extensions/wecom-openclaw-plugin`），Gateway 启动时可加载（若 `plugins.allow` 为空，可能出现「自动发现扩展」类提示，可按官方建议收紧白名单）。
+- **通道配置**：`channels.wecom` 使用 **Bot 模式**（`botId`、`secret`、`enabled`）；与企微开放平台 **WebSocket 长连接**（`wss://openws.work.weixin.qq.com`）建连并完成鉴权后，心跳按插件策略运行。
+- **端到端验证（参考环境）**：企业微信 **私聊** 发送文本 → Gateway 日志可见 `aibot_msg_callback` → 路由至默认 agent（所配置的 **OpenAI 兼容**模型）→ 插件经 WebSocket **回传回复**且企微侧 **ack** 成功。说明在该环境下 **「企微客户端 ↔ 运行 Gateway 的机器上的对话型 Agent」** 链路曾接通；换机或重装需按实践文档重做配置。
+- **能力边界（重要）**：
+  - 这是 **对话入口**，不是 §8 阶段 2 的 **任务状态机**；**不**等同于已完成「CI webhook → 构建 → 分析 → 审批」流水线。
+  - **不能**默认把整条 **`emberclaw` CLI**（如 `worktree`、`commit-push`）当作企微里可直接点的命令；若需要，须在 Gateway 侧配置 **受控工具 / 任务步骤**（§8.2、§8 阶段 2）并评估安全边界。
+
 ---
 
 ## 4. 当前无法实现「自动化任务管理」的原因（归纳）
@@ -90,15 +113,17 @@
 - [ ] 默认模型：`openclaw models status` 是否为预期（如 `openai-compatible/...`）？  
 - [ ] Node：`node -v` 是否满足 OpenClaw 要求？  
 - [ ] 单次本地 agent：`openclaw agent --local --session-id <id> --message "..."` 是否成功？  
+- [ ] Gateway + 企业微信 Bot：是否在**你的**环境按 [openclaw-wecom-practice.md](./openclaw-wecom-practice.md) 完成插件与 `channels.wecom`，并用 `gateway run`（或等价常驻方式）验证 **WS 鉴权与私聊回复**？（§3.5 仅为维护者参考环境记录，**非**团队默认完成项。）  
+- [ ] Gateway **常驻**：是否已 `gateway install` + `start`，或用 pm2/launchd 托管 `gateway run`，避免终端关掉即断连？  
 - [ ] 若仍要用 claw：`target/release/claw` 是否存在且 `ANTHROPIC_*` 是否按需配置？  
-- [ ] 「自动化」是否已写下：**触发条件、成功条件、失败动作、通知对象**？
+- [ ] 「自动化」是否已写下：**触发条件、成功条件、失败动作、通知对象**？（§8 阶段 2 仍为待办）
 
 ---
 
 ## 7. 文档维护
 
-- **用途**：团队内对齐「为什么 OpenAI 兼容模型不能绑在 emberclaw/claw REPL 上」「local agent 不等于任务编排」以及 **§8 目标终局**。  
-- **更新时机**：claw-code-parity 若接入 OpenAI 兼容、或 OpenClaw Gateway/cron/tasks 行为变更时，修订 §3、§4、§8.5。
+- **用途**：团队内对齐「为什么 OpenAI 兼容模型不能绑在 emberclaw/claw REPL 上」「local agent 不等于任务编排」以及 **§8 目标终局**；并记录 **WeCom × Gateway** 在参考环境的验证进度（见文首进度快照、§3.5），避免被误读为全员开箱即用。  
+- **更新时机**：claw-code-parity 若接入 OpenAI 兼容、或 OpenClaw Gateway/cron/tasks/企微插件行为变更时，修订 §3、§3.5、§4、文首进度表、§8.5。
 
 ---
 
@@ -134,7 +159,7 @@ OpenClaw Gateway (常驻 Node 服务)
      ├── Approval 工作流（以官方配置为准）
      ├── LLM（openai-compatible/<model-id>，类 OpenAI 协议任意厂商）
      ├── Tool / Node 策略（调用 emberclaw、gradle、git 等）
-     └── Notification（企业微信 / 飞书 / DingTalk 等；企业微信落地步骤见 [openclaw-wecom-practice.md](./openclaw-wecom-practice.md)）
+     └── Channels / Notification（**企业微信智能机器人（Bot WebSocket）** 曾在维护者参考环境与 Gateway 对话链路验证；飞书 / 群机器人 Webhook 等并行可选；企微操作步骤见 [openclaw-wecom-practice.md](./openclaw-wecom-practice.md)）
           ↓
 Android 项目 SmartEmergencyMesh（或任意工作副本路径）
 ```
@@ -313,4 +338,4 @@ notification:
 
 ---
 
-*本文档依据截至编写时的代码与 CLI 行为整理；§8 为目标架构与实施路线图，具体子命令以 `openclaw --help`、`emberclaw`、`claw --help` 与 [OpenClaw 官方文档](https://docs.openclaw.ai) 为准。*
+*本文档依据截至编写时的代码与 CLI 行为整理；文首进度快照与 §3.5 反映本仓库维护者在 **2026-04** 于**参考开发机**上的验证记录，**不保证**其他环境无需配置即可复现。§8 为目标架构与实施路线图，具体子命令以 `openclaw --help`、`emberclaw`、`claw --help` 与 [OpenClaw 官方文档](https://docs.openclaw.ai) 为准。*

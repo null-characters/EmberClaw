@@ -74,6 +74,39 @@ openclaw gateway restart      # 若服务已在跑
 
 具体键名与取值以插件 README 与 `openclaw config --help` 为准。
 
+### 2.6 仅自己私聊（单人白名单）
+
+可以做到**只有你能和机器人私聊**；其他人发私聊会被策略拒绝（具体表现以插件为准）。
+
+1. **查自己的企业微信 UserID**（不是姓名，一般是类似 `ZhangSan` 的账号标识）：  
+   - **管理后台**：通讯录 → 点开你的成员资料，查看 **账号** / **UserID**（以页面显示为准）；或  
+   - 请管理员在后台导出/查询；或  
+   - 若插件在日志里会打印发件人 ID，可临时用宽松策略发一条测试消息从日志读取（调完再改回白名单）。
+
+2. **OpenClaw 配置示例**（键名以插件为准，数组格式以 `openclaw config` 支持的 JSON 为准）：
+
+```bash
+openclaw config set channels.wecom.dmPolicy allowlist
+openclaw config set channels.wecom.allowFrom '["你的UserID"]'
+# 若不需要在任何群里使用机器人：
+openclaw config set channels.wecom.groupPolicy disabled
+```
+
+若 `allowFrom` 需要 JSON 数组而 CLI 不支持一行写入，可直接编辑 `~/.openclaw/openclaw.json`（或 `OPENCLAW_CONFIG_PATH` 指向的文件），在 `channels.wecom` 下设置：
+
+```json5
+"wecom": {
+  "enabled": true,
+  "dmPolicy": "allowlist",
+  "allowFrom": ["你的UserID"],
+  "groupPolicy": "disabled"
+}
+```
+
+3. **企业微信侧**：无需额外「仅自己」开关；访问控制由 **OpenClaw 插件策略**完成。仍建议不要把机器人拉进公共群，或保持 `groupPolicy: disabled`，避免群里 @ 机器人带来误用。
+
+4. **`pairing` 与 `allowlist` 的区别**：`pairing` 是「先配对再聊」，适合小团队；**严格只要自己一个人**时，用 **`allowlist` + 仅含你的 UserID** 最直接。
+
 ---
 
 ## 3. 备选：Agent 模式（自建应用 + XML 加密回调）
