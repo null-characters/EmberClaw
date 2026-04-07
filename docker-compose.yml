@@ -1,0 +1,80 @@
+# =============================================================================
+# EmberClaw Docker Compose
+# Production deployment configuration
+# =============================================================================
+
+version: '3.8'
+
+services:
+  emberclaw:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: emberclaw:latest
+    container_name: emberclaw
+    restart: unless-stopped
+    
+    # Environment variables
+    environment:
+      - NODE_ENV=production
+      - HEALTH_PORT=9876
+      # API keys (use .env file or secrets)
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GITHUB_TOKEN=${GITHUB_TOKEN:-}
+    
+    # Port mappings
+    ports:
+      - "9876:9876"  # Health check endpoint
+    
+    # Volume mounts for persistence
+    volumes:
+      # Logs
+      - emberclaw-logs:/app/.emberclaw/logs
+      # Backups
+      - emberclaw-backups:/app/.emberclaw/backups
+      # Sessions (optional)
+      - emberclaw-sessions:/app/.emberclaw/sessions
+      # SOUL.md (for memory persistence)
+      - ./SOUL.md:/app/SOUL.md:rw
+      # Custom config (optional)
+      # - ./config:/app/config:ro
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9876/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+# Named volumes for data persistence
+volumes:
+  emberclaw-logs:
+    driver: local
+  emberclaw-backups:
+    driver: local
+  emberclaw-sessions:
+    driver: local
+
+# Networks (optional - for multi-container setups)
+networks:
+  default:
+    name: emberclaw-network

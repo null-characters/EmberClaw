@@ -174,7 +174,7 @@
 
 ---
 
-### 阶段 4：多 Agent & 流程（生产级能力）
+### 阶段 4：多 Agent & 流程（生产级能力） ✅
 
 **目标：** 实现 sub-agent 协同工作
 
@@ -184,63 +184,72 @@
 
 ##### 4.1 Sub-Agent 分组（4 个领域 agent）
 
-- [ ] **embedded**（嵌入式）- nordic-nrf / nordic-mesh / power-control / nrf-sdk / embedded-testing
-- [ ] **gateway**（网关）- rpi-gateway / docker-ci / github / embedded-testing
-- [ ] **app**（移动端）- ios-dev / android-dev / xcode-build / android-build
-- [ ] **web**（阶段 5 占位）- 待定
+- [x] **embedded**（嵌入式）- nordic-nrf / nordic-mesh / power-control / nrf-sdk / embedded-testing
+- [x] **gateway**（网关）- rpi-gateway / docker-ci / github / embedded-testing
+- [x] **app**（移动端）- ios-dev / android-dev / xcode-build / android-build
+- [x] **web**（阶段 5 占位）- 配置占位完成
 
 ##### 4.2 流程集成
 
-- [ ] Planning → agent 选择 + 子任务生成（orchestrator 分析任务，匹配分组）
-- [ ] TDD 并行分发（sessions_spawn，push-based 通知，leaf agent 不可再 spawn）
-- [ ] Review gate（结果汇总 + 质量检查 + steer 重试）
-- [ ] Deploy 触发（构建/烧录/部署）
-- [ ] 端到端验证：三端同步构建场景
+- [x] Planning → agent 选择 + 子任务生成（orchestrator 分析任务，匹配分组）
+- [x] TDD 并行分发（sessions_spawn，push-based 通知，leaf agent 不可再 spawn）
+- [x] Review gate（结果汇总 + 质量检查 + steer 重试）
+- [x] Deploy 触发（构建/烧录/部署）
+- [x] 端到端验证：三端同步构建场景
 
 ##### 4.3 OpenClaw 配置
 
-- [ ] agents.list[] 定义 4 个领域 agent
-- [ ] allowAgents 白名单：orchestrator 可 spawn 4 个 leaf agent
-- [ ] maxSpawnDepth=2，maxConcurrent=4
+- [x] agents.list[] 定义 4 个领域 agent
+- [x] allowAgents 白名单：orchestrator 可 spawn 4 个 leaf agent
+- [x] maxSpawnDepth=2，maxConcurrent=4
 
 #### 输出物
 
 - ✅ 可并行处理多个模块（embedded + gateway + app 同时构建）
 - ✅ 端到端任务自动化（固件编译 → App 联调）
+- ✅ `config/agents/` 配置目录
+- ✅ `src/orchestrator/` 编排模块
+- ✅ `tests/orchestrator.test.ts` 端到端测试
 
 ---
 
-### 阶段 5：长期维护（可持久运行）
+### 阶段 5：长期维护（可持久运行） ✅
 
 **目标：** 生产级部署与运维
+
+**进度记录：** [PHASE_5.md](./PHASE_5.md)
 
 #### 主要任务
 
 ##### 5.1 部署方案
 
-- [ ] Docker 化
-- [ ] systemd 服务配置
-- [ ] pm2 备选方案
-- [ ] 自动更新机制
+- [x] Docker 化
+- [x] systemd 服务配置
+- [x] pm2 备选方案
+- [x] 自动更新机制
 
 ##### 5.2 运维监控
 
-- [ ] 日志系统
-- [ ] 监控告警
-- [ ] 记忆备份
-- [ ] 健康检查
+- [x] 日志系统
+- [x] 监控告警
+- [x] 记忆备份
+- [x] 健康检查
 
 ##### 5.3 文档
 
-- [ ] 用户使用手册
-- [ ] 开发者文档
-- [ ] API 文档
+- [x] 用户使用手册
+- [x] 开发者文档
+- [x] API 文档
 
 #### 输出物
 
 - ✅ 后台 daemon 服务
 - ✅ 完整运维文档
 - ✅ 用户手册
+- ✅ `Dockerfile` + `docker-compose.yml`
+- ✅ `deploy/emberclaw.service` (systemd)
+- ✅ `ecosystem.config.cjs` (pm2)
+- ✅ `src/daemon/` 模块
 
 ---
 
@@ -393,6 +402,8 @@ emberclaw/
 | 日期 | 版本 | 更新内容 |
 |------|------|---------|
 | 2026-04-02 | v0.1.0 | 初始规划文档 |
+| 2026-04-07 | v0.2.0 | 阶段 4 完成；阶段 5 启动 |
+| 2026-04-07 | v0.3.0 | 阶段 5 完成：生产级部署与运维 |
 
 ---
 

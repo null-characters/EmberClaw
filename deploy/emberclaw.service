@@ -1,0 +1,86 @@
+# =============================================================================
+# EmberClaw systemd Service
+# /etc/systemd/system/emberclaw.service
+# =============================================================================
+#
+# Installation:
+#   sudo cp deploy/emberclaw.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable emberclaw
+#   sudo systemctl start emberclaw
+#
+# Management:
+#   sudo systemctl status emberclaw
+#   sudo journalctl -u emberclaw -f
+#   sudo systemctl restart emberclaw
+#
+
+[Unit]
+Description=EmberClaw IoT Agent
+Documentation=https://github.com/null-characters/EmberClaw
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+# Service type
+Type=simple
+
+# User and group (create with: sudo useradd -r -s /bin/false emberclaw)
+User=emberclaw
+Group=emberclaw
+
+# Working directory
+WorkingDirectory=/opt/emberclaw
+
+# Start command
+ExecStart=/usr/bin/node /opt/emberclaw/bin/emberclaw.mjs daemon
+
+# Restart policy
+Restart=always
+RestartSec=10
+WatchdogSec=60
+
+# Stop timeout
+TimeoutStopSec=30
+
+# Environment
+Environment=NODE_ENV=production
+Environment=HEALTH_PORT=9876
+# API keys should be in EnvironmentFile
+EnvironmentFile=-/opt/emberclaw/.env
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+MemoryMax=2G
+CPUQuota=200%
+
+# Security hardening
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+
+# Allow read-write to data directories
+ReadWritePaths=/opt/emberclaw/.emberclaw
+ReadWritePaths=/opt/emberclaw/SOUL.md
+
+# Capabilities
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+# Standard I/O
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=emberclaw
+
+[Install]
+WantedBy=multi-user.target
