@@ -21,7 +21,19 @@
 
 每个 skill 放在 `skills/<skill-name>/` 下，至少包含一个 `SKILL.md`。
 
-### IoT 专属 Skills
+### Skills 总览
+
+#### 开发工具链（阶段 3）
+
+| Skill | 说明 |
+|-------|------|
+| `github` | gh CLI — PR、CI、issue、API 查询 |
+| `xcode-build` | xcodebuild/xcrun — iOS 构建、签名、模拟器 |
+| `android-build` | Gradle/ADB — Android 构建、安装、调试 |
+| `nrf-sdk` | west/nrfjprog — nRF52840 固件编译、烧录、调试 |
+| `docker-ci` | Docker — CI 容器、交叉编译环境 |
+
+#### IoT 专属
 
 | Skill | 说明 |
 |-------|------|

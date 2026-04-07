@@ -54,4 +54,16 @@ node bin/emberclaw.mjs worktree list
 
 ---
 
-*最后更新：2026-04-03 — 阶段 2 启动*
+## 阶段 3 决策
+
+### 三端聚焦，延迟网关工具
+
+阶段 3 聚焦 nRF52840 / iOS / Android 三端开发。Serial MCP、SSH MCP、Database MCP 延迟到阶段 4+（网关开发时再集成），原因：三端当前通过 BLE/USB 调试，无远程设备操作需求，无数据库需求。
+
+### 集成方式：Skill 文档，非 MCP Server
+
+OpenClaw 的 skills 是 SKILL.md 文档 + CLI 工具调用，不是独立 MCP server。agent 通过文档引导使用 xcodebuild、gradlew、west 等系统 CLI。工具层用 mcporter 桥接外部 MCP。
+
+---
+
+*最后更新：2026-04-07 — 阶段 3 执行中：5 个开发工具 skill 已创建*
