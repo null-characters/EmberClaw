@@ -94,11 +94,11 @@
 
 #### 主要任务
 
-- [ ] 集成 claw-code Rust 作为 coding engine
-- [ ] 实现基本 REPL 交互
-- [ ] 实现 git worktree 支持
-- [ ] 实现自动 commit / push（配置 PAT）
-- [ ] 基本命令行参数解析
+- [x] 集成 claw-code Rust 作为 coding engine
+- [x] 实现基本 REPL 交互
+- [x] 实现 git worktree 支持
+- [x] 实现自动 commit / push（配置 PAT）
+- [x] 基本命令行参数解析
 
 #### 输出物
 
@@ -114,109 +114,142 @@
 
 #### 主要任务
 
+**进度记录：** [PHASE_2.md](./PHASE_2.md)
+
 ##### 2.1 迁移现有技能
 
-- [ ] 迁移 Superpowers skills
-- [ ] 迁移 Drift 代码一致性检查
-- [ ] 迁移 nordic-nrf 技能
-- [ ] 整理 AGENTS.md / SOUL.md
+- [x] 迁移 nordic-nrf 技能（从 `~/.cursor/skills/`）
+- [x] 整理 AGENTS.md / SOUL.md
+- ~~Superpowers~~ — 上游无独立可迁移技能（仅测试 fixture）
+- ~~Drift~~ — 上游指 npm 完整性漂移检测，非代码一致性检查
 
 ##### 2.2 开发 IoT 专属 Skills
 
-- [ ] `nordic-mesh` - nRF Mesh 开发技能
-- [ ] `power-control` - 开关电源控制技能
-- [ ] `rpi-gateway` - 树莓派网关技能
-- [ ] `ios-dev` - iOS 开发技能
-- [ ] `android-dev` - Android 开发技能
-- [ ] `embedded-testing` - 嵌入式测试技能
+- [x] `nordic-mesh` - nRF Mesh 开发技能
+- [x] `power-control` - 开关电源控制技能
+- [x] `rpi-gateway` - 树莓派网关技能
+- [x] `ios-dev` - iOS 开发技能
+- [x] `android-dev` - Android 开发技能
+- [x] `embedded-testing` - 嵌入式测试技能
 
 #### 输出物
 
-- ✅ 完整的 skills 目录
-- ✅ AGENTS.md（项目上下文）
-- ✅ SOUL.md（长期记忆）
+- ✅ 完整的 skills 目录（7 个 skill）
+- ✅ AGENTS.md（项目上下文 + 技能系统 + CLI 用法）
+- ✅ SOUL.md（长期记忆与决策记录）
 
 ---
 
-### 阶段 3：工具增强（真正可操作硬件）
+### 阶段 3：工具增强（三端开发 MCP 集成）
 
-**目标：** 接入硬件操作工具
+**目标：** 聚焦 nRF52840 / iOS / Android 三端开发，接入对应 MCP 工具
+
+**进度记录：** [PHASE_3.md](./PHASE_3.md)
 
 #### 主要任务
 
-- [ ] 集成 Serial MCP（串口通信）
-- [ ] 集成 SSH MCP（远程设备操作）
-- [ ] 集成 Database MCP（数据库操作）
-- [ ] 集成 Docker MCP（容器管理）
-- [ ] 集成 GitHub MCP（仓库管理）
+##### 3.1 当前范围（三端开发）
+
+- [ ] 集成 GitHub MCP（仓库管理、PR、CI）
+- [ ] 集成 Xcode MCP（iOS 构建、签名、模拟器测试）
+- [ ] 集成 Android SDK MCP（Gradle 构建、ADB 设备调试）
+- [ ] 集成 nRF Connect SDK 工具链（west build、J-Link 调试）
+- [ ] 集成 Docker MCP（CI 容器、交叉编译环境）
 - [ ] 实现权限沙箱（安全隔离）
+
+##### 3.2 延迟功能（后续阶段添加）
+
+| 功能 | 延迟原因 | 计划阶段 |
+|------|---------|---------|
+| Serial MCP（串口通信） | 当前三端开发通过 BLE/USB 调试即可满足；串口主要用于网关与嵌入式板间通信，待网关开发阶段再集成 | 阶段 4+ |
+| SSH MCP（远程设备操作） | 当前无远程设备（树莓派网关）需操作；待网关部署阶段再添加 | 阶段 4+ |
+| Database MCP（数据库操作） | 当前三端不涉及数据库；网关服务端数据层需独立设计，放到网关开发时统一规划 | 阶段 4+ |
 
 #### 输出物
 
-- ✅ Agent 可直接操作开发板
-- ✅ Agent 可直接操作树莓派
-- ✅ Agent 可管理 Docker 容器
+- ✅ Agent 可管理 GitHub 仓库与 PR
+- ✅ Agent 可构建/测试 iOS App
+- ✅ Agent 可构建/调试 Android App
+- ✅ Agent 可编译/烧录 nRF52840 固件
 
 ---
 
-### 阶段 4：多 Agent & 流程（生产级能力）
+### 阶段 4：多 Agent & 流程（生产级能力） ✅
 
 **目标：** 实现 sub-agent 协同工作
 
+**进度记录：** [PHASE_4.md](./PHASE_4.md)
+
 #### 主要任务
 
-##### 4.1 Sub-Agent 分组
+##### 4.1 Sub-Agent 分组（4 个领域 agent）
 
-- [ ] **嵌入式组** - Nordic / 电源控制
-- [ ] **网关组** - 树莓派 / Linux
-- [ ] **App 组** - iOS / Android
-- [ ] **Web 组** - 前端 / 后端 / 数据库
+- [x] **embedded**（嵌入式）- nordic-nrf / nordic-mesh / power-control / nrf-sdk / embedded-testing
+- [x] **gateway**（网关）- rpi-gateway / docker-ci / github / embedded-testing
+- [x] **app**（移动端）- ios-dev / android-dev / xcode-build / android-build
+- [x] **web**（阶段 5 占位）- 配置占位完成
 
 ##### 4.2 流程集成
 
-- [ ] 集成 Superpowers 全流程
-  - Planning → TDD → Review → Deploy
-- [ ] 实现多 Agent 并行调度
-- [ ] 实现 Agent 间通信协议
+- [x] Planning → agent 选择 + 子任务生成（orchestrator 分析任务，匹配分组）
+- [x] TDD 并行分发（sessions_spawn，push-based 通知，leaf agent 不可再 spawn）
+- [x] Review gate（结果汇总 + 质量检查 + steer 重试）
+- [x] Deploy 触发（构建/烧录/部署）
+- [x] 端到端验证：三端同步构建场景
+
+##### 4.3 OpenClaw 配置
+
+- [x] agents.list[] 定义 4 个领域 agent
+- [x] allowAgents 白名单：orchestrator 可 spawn 4 个 leaf agent
+- [x] maxSpawnDepth=2，maxConcurrent=4
 
 #### 输出物
 
-- ✅ 可并行处理多个模块
-- ✅ 端到端任务自动化
+- ✅ 可并行处理多个模块（embedded + gateway + app 同时构建）
+- ✅ 端到端任务自动化（固件编译 → App 联调）
+- ✅ `config/agents/` 配置目录
+- ✅ `src/orchestrator/` 编排模块
+- ✅ `tests/orchestrator.test.ts` 端到端测试
 
 ---
 
-### 阶段 5：长期维护（可持久运行）
+### 阶段 5：长期维护（可持久运行） ✅
 
 **目标：** 生产级部署与运维
+
+**进度记录：** [PHASE_5.md](./PHASE_5.md)
 
 #### 主要任务
 
 ##### 5.1 部署方案
 
-- [ ] Docker 化
-- [ ] systemd 服务配置
-- [ ] pm2 备选方案
-- [ ] 自动更新机制
+- [x] Docker 化
+- [x] systemd 服务配置
+- [x] pm2 备选方案
+- [x] 自动更新机制
 
 ##### 5.2 运维监控
 
-- [ ] 日志系统
-- [ ] 监控告警
-- [ ] 记忆备份
-- [ ] 健康检查
+- [x] 日志系统
+- [x] 监控告警
+- [x] 记忆备份
+- [x] 健康检查
 
 ##### 5.3 文档
 
-- [ ] 用户使用手册
-- [ ] 开发者文档
-- [ ] API 文档
+- [x] 用户使用手册
+- [x] 开发者文档
+- [x] API 文档
 
 #### 输出物
 
 - ✅ 后台 daemon 服务
 - ✅ 完整运维文档
 - ✅ 用户手册
+- ✅ `Dockerfile` + `docker-compose.yml`
+- ✅ `deploy/emberclaw.service` (systemd)
+- ✅ `ecosystem.config.cjs` (pm2)
+- ✅ `src/daemon/` 模块
 
 ---
 
@@ -369,6 +402,8 @@ emberclaw/
 | 日期 | 版本 | 更新内容 |
 |------|------|---------|
 | 2026-04-02 | v0.1.0 | 初始规划文档 |
+| 2026-04-07 | v0.2.0 | 阶段 4 完成；阶段 5 启动 |
+| 2026-04-07 | v0.3.0 | 阶段 5 完成：生产级部署与运维 |
 
 ---
 

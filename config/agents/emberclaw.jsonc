@@ -1,0 +1,138 @@
+{
+  // EmberClaw Main Configuration
+  // OpenClaw agents configuration for IoT full-stack development
+  // 
+  // Architecture:
+  //   orchestrator (depth 0) -> [embedded, gateway, app, web] (depth 1, leaves)
+  //   maxSpawnDepth: 2, maxConcurrent: 4
+  
+  "agents": {
+    "defaults": {
+      "subagents": {
+        // Max depth: orchestrator -> agent (2 levels total)
+        "maxSpawnDepth": 2,
+        // Max concurrent sub-agents
+        "maxConcurrent": 4,
+        // Max children per agent (for load distribution)
+        "maxChildrenPerAgent": 4
+      },
+      // Default thinking level for all agents
+      "thinkingDefault": "medium",
+      // Default workspace
+      "workspace": "."
+    },
+    
+    "list": [
+      // ========================================
+      // Orchestrator Agent (depth 0, main entry)
+      // ========================================
+      {
+        "id": "emberclaw-main",
+        "name": "EmberClaw Orchestrator",
+        "default": true,
+        "skills": ["github", "docker-ci"],
+        "subagents": {
+          // Orchestrator can spawn all domain agents
+          "allowAgents": ["embedded", "gateway", "app", "web"]
+        },
+        "sandbox": {
+          "mode": "workspace"
+        }
+      },
+      
+      // ========================================
+      // Embedded Agent (depth 1, leaf)
+      // ========================================
+      {
+        "id": "embedded",
+        "name": "Embedded Agent",
+        "skills": [
+          "nordic-nrf",
+          "nordic-mesh",
+          "power-control",
+          "nrf-sdk",
+          "embedded-testing"
+        ],
+        "subagents": {
+          "allowAgents": []
+        },
+        "sandbox": {
+          "mode": "workspace"
+        }
+      },
+      
+      // ========================================
+      // Gateway Agent (depth 1, leaf)
+      // ========================================
+      {
+        "id": "gateway",
+        "name": "Gateway Agent",
+        "skills": [
+          "rpi-gateway",
+          "docker-ci",
+          "github",
+          "embedded-testing"
+        ],
+        "subagents": {
+          "allowAgents": []
+        },
+        "sandbox": {
+          "mode": "workspace"
+        }
+      },
+      
+      // ========================================
+      // App Agent (depth 1, leaf)
+      // ========================================
+      {
+        "id": "app",
+        "name": "App Agent",
+        "skills": [
+          "ios-dev",
+          "android-dev",
+          "xcode-build",
+          "android-build"
+        ],
+        "subagents": {
+          "allowAgents": []
+        },
+        "sandbox": {
+          "mode": "workspace"
+        }
+      },
+      
+      // ========================================
+      // Web Agent (depth 1, leaf, Phase 5 placeholder)
+      // ========================================
+      {
+        "id": "web",
+        "name": "Web Agent",
+        "skills": [],
+        "subagents": {
+          "allowAgents": []
+        },
+        "sandbox": {
+          "mode": "workspace"
+        }
+      }
+    ]
+  },
+  
+  // Skills directory configuration
+  "skills": {
+    "directory": "./skills",
+    "autoload": true
+  },
+  
+  // Session configuration
+  "session": {
+    "scope": "agent"
+  },
+  
+  "_meta": {
+    "version": "0.1.0",
+    "created": "2026-04-07",
+    "phase": 4,
+    "description": "Multi-agent orchestration for IoT full-stack development"
+  }
+}

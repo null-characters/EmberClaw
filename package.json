@@ -1,0 +1,23 @@
+{
+  "name": "emberclaw",
+  "version": "0.1.0",
+  "private": true,
+  "description": "EmberClaw CLI — wraps claw-code-parity (Rust) with git worktree and optional push helpers",
+  "type": "module",
+  "bin": {
+    "emberclaw": "bin/emberclaw.mjs"
+  },
+  "scripts": {
+    "emberclaw": "node bin/emberclaw.mjs",
+    "build:engine": "cargo build --release -p rusty-claude-cli --manifest-path claw-engine/claw-code-parity/rust/Cargo.toml",
+    "test": "npx tsx tests/orchestrator.test.ts",
+    "typecheck": "npx tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "tsx": "^4.7.0"
+  }
+}

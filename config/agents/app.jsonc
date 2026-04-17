@@ -1,0 +1,54 @@
+{
+  // EmberClaw App Agent Configuration
+  // 移动端 Agent - 专注于 iOS/Android 应用开发
+  // depth: 1 (leaf agent, cannot spawn sub-agents)
+  
+  "id": "app",
+  "name": "App Agent",
+  "default": false,
+  
+  // Skills for mobile app development
+  "skills": [
+    "ios-dev",        // iOS / SwiftUI 开发技能
+    "android-dev",    // Android / Jetpack Compose 开发技能
+    "xcode-build",    // xcodebuild/xcrun — iOS 构建、签名、模拟器
+    "android-build"   // Gradle/ADB — Android 构建、安装、调试
+  ],
+  
+  // Sub-agent configuration - leaf agent cannot spawn
+  "subagents": {
+    "allowAgents": []
+  },
+  
+  // Sandbox configuration - workspace-only access
+  "sandbox": {
+    "mode": "workspace",
+    "allowedPaths": [
+      "./ios",
+      "./android",
+      "./mobile"
+    ]
+  },
+  
+  // Agent-specific model preferences
+  "thinkingDefault": "medium",
+  
+  // Typical tasks this agent handles:
+  // - iOS/Android 构建
+  // - 模拟器测试
+  // - BLE 连接 UI 同步
+  // - 代码签名配置
+  // - App Store/Play Store 发布准备
+  
+  // CLI tools this agent uses:
+  // - xcodebuild, xcrun (iOS)
+  // - ./gradlew, adb (Android)
+  // - fastlane (可选)
+  
+  "_meta": {
+    "domain": "app",
+    "depth": 1,
+    "version": "0.1.0",
+    "created": "2026-04-07"
+  }
+}
